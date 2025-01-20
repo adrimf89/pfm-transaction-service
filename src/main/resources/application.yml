@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: dev
+    active: local
 
 com.adri.pfm:
   transaction:
@@ -16,6 +16,40 @@ spring:
 
   activemq:
     broker-url: vm://localhost?broker.persistent=false
+
+  h2.console.enabled: true
+  h2.console.path: /console
+
+  sql.init.data-locations: classpath:data-h2.sql
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    platform: h2
+    driver-class-name: org.h2.Driver
+    username: pfm
+    password: pfm
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      use-new-id-generator-mappings: true
+    show-sql: false
+    properties.hibernate.format_sql: true
+    defer-datasource-initialization: true
+
+logging.level:
+  com.adri.pfm: DEBUG
+  org.springframework.security: INFO
+  org.springframework.cloud: INFO
+
+---
+spring:
+  config.active.on-profile: local
+
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: amq
+    password: amq
 
   h2.console.enabled: true
   h2.console.path: /console
