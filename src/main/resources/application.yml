@@ -1,0 +1,8 @@
+server:
+  servlet.context-path: /pfm-transactions
+
+spring:
+  application.name: pfm-transaction-service
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
