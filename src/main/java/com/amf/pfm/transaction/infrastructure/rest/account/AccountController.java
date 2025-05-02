@@ -49,6 +49,6 @@ public class AccountController {
     }
 
     private AccountRestResponse toAccountRestResponse(Account account) {
-        return new AccountRestResponse(account.getId(), account.getIban(), account.getBalance());
+        return new AccountRestResponse(account.getId(), account.getIban(), account.getBalance(), account.getUpdatedAt());
     }
 }

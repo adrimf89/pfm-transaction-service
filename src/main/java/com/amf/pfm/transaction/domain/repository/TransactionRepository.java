@@ -9,4 +9,5 @@ public interface TransactionRepository {
     Transaction save(Transaction transaction);
     Transaction findByIdAndAccountId(UUID id, UUID accountId);
     List<Transaction> findByAccountId(UUID accountId);
+    Transaction updateTransactionStatus(UUID id, UUID accountId, Transaction.TransactionStatus status);
 }

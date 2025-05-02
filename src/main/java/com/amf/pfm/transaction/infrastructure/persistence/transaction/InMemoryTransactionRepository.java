@@ -44,4 +44,16 @@ public class InMemoryTransactionRepository implements TransactionRepository {
                 .getOrDefault(accountId, Collections.emptyMap())
                 .values());
     }
+
+    @Override
+    public Transaction updateTransactionStatus(UUID id, UUID accountId, Transaction.TransactionStatus status) {
+        if (transactionsByAccount.containsKey(accountId)) {
+            Map<UUID, Transaction> accountTransactions = transactionsByAccount.get(accountId);
+            if (accountTransactions.containsKey(id)) {
+                accountTransactions.get(id).setStatus(status);
+                return accountTransactions.get(id);
+            }
+        }
+        throw new EntityNotFoundException(String.format(TRANSACTION_NOT_FOUND, id, accountId));
+    }
 }

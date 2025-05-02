@@ -2,6 +2,7 @@ package com.amf.pfm.transaction.domain.repository;
 
 import com.amf.pfm.transaction.domain.model.Account;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,4 +12,5 @@ public interface AccountRepository {
     List<Account> findAll();
     boolean existsByIban(String iban);
     boolean existsById(UUID id);
+    void updateAccountBalance(UUID id, BigDecimal balance);
 }

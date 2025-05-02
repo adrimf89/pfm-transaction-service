@@ -3,14 +3,13 @@ package com.amf.pfm.transaction.application.account;
 import com.amf.pfm.transaction.domain.exception.EntityConflictException;
 import com.amf.pfm.transaction.domain.model.Account;
 import com.amf.pfm.transaction.domain.repository.AccountRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 import static com.amf.pfm.transaction.domain.exception.Messages.ACCOUNT_IBAN_ALREADY_EXISTS;
 
-@Service
+
 public class AccountService {
 
     private final AccountRepository accountRepository;
