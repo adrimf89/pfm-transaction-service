@@ -11,4 +11,6 @@ public class Messages {
     public static final String TRANSACTION_WITH_INVALID_AMOUNT = "Transaction amount cannot be empty";
     public static final String TRANSACTION_WITH_INVALID_ACCOUNT_ID = "Transaction account ID cannot be empty";
     public static final String TRANSACTION_NOT_FOUND = "Transaction with ID '%s' and account ID '%s' not found";
+    public static final String TRANSACTION_STATUS_NOT_EQUIVALENT = "Received transaction status '%s' not equal to the current transaction status '%s'";
+    public static final String TRANSACTION_INVALID_STATUS_TRANSITION = "Invalid transaction status transition from '%s' to '%s'";
 }

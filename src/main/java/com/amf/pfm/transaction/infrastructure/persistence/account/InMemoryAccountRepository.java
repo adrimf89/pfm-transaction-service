@@ -5,6 +5,8 @@ import com.amf.pfm.transaction.domain.model.Account;
 import com.amf.pfm.transaction.domain.repository.AccountRepository;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,5 +48,15 @@ public class InMemoryAccountRepository implements AccountRepository {
     @Override
     public boolean existsById(UUID id) {
         return accounts.containsKey(id);
+    }
+
+    @Override
+    public void updateAccountBalance(UUID id, BigDecimal balance) {
+        if (!accounts.containsKey(id)) {
+            throw new EntityNotFoundException(String.format(ACCOUNT_NOT_FOUND, id));
+        }
+        Account account = accounts.get(id);
+        Account copy = new Account(account.getId(), account.getIban(), balance, account.getCreatedAt(), LocalDateTime.now());
+        accounts.put(id, copy);
     }
 }

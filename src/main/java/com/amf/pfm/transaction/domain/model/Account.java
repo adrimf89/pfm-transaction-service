@@ -5,11 +5,12 @@ import com.amf.pfm.transaction.domain.validator.IbanValidator;
 import io.micrometer.common.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static com.amf.pfm.transaction.domain.exception.Messages.ACCOUNT_WITH_INVALID_IBAN;
 
-public class Account {
+public class Account extends Traceable {
 
     private final UUID id;
     private final String iban;
@@ -22,10 +23,12 @@ public class Account {
         validateAccount();
     }
 
-    public Account(UUID id, String iban, BigDecimal balance) {
+    public Account(UUID id, String iban, BigDecimal balance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.iban = iban;
         this.balance = balance;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         validateAccount();
     }
 
