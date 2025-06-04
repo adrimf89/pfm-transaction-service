@@ -19,7 +19,7 @@ public class Account extends Traceable {
     public Account(String iban, BigDecimal balance) {
         this.id = UUID.randomUUID();
         this.iban = iban;
-        this.balance = balance;
+        this.balance = balance == null ? BigDecimal.ZERO : balance;
         validateAccount();
     }
 
@@ -46,6 +46,7 @@ public class Account extends Traceable {
 
     public void addOrSubtractAmount(BigDecimal amount) {
         this.balance = this.balance.add(amount);
+        updated();
     }
 
     private void validateAccount() {

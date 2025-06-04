@@ -51,12 +51,12 @@ public class InMemoryAccountRepository implements AccountRepository {
     }
 
     @Override
-    public void updateAccountBalance(UUID id, BigDecimal balance) {
+    public void updateAccountBalance(UUID id, BigDecimal balance, LocalDateTime updatedAt) {
         if (!accounts.containsKey(id)) {
             throw new EntityNotFoundException(String.format(ACCOUNT_NOT_FOUND, id));
         }
         Account account = accounts.get(id);
-        Account copy = new Account(account.getId(), account.getIban(), balance, account.getCreatedAt(), LocalDateTime.now());
+        Account copy = new Account(account.getId(), account.getIban(), balance, account.getCreatedAt(), updatedAt);
         accounts.put(id, copy);
     }
 }

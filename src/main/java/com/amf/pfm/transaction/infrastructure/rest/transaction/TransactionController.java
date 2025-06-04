@@ -45,7 +45,7 @@ public class TransactionController {
     }
 
     private CreateTransactionRequest toCreateTransactionRequest(TransactionRestRequest request, UUID accountId) {
-        return new CreateTransactionRequest(request.concept(), request.amount(), request.date(), accountId);
+        return new CreateTransactionRequest(request.concept(), request.amount(), request.date(), accountId, request.categoryId());
     }
 
     private TransactionRestResponse toTransactionRestResponse(Transaction transaction) {

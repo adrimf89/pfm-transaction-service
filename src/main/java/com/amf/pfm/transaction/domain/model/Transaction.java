@@ -30,25 +30,38 @@ public class Transaction {
     private final BigDecimal amount;
     private final LocalDateTime date;
     private final UUID accountId;
+    private UUID categoryId;
     private TransactionStatus status;
+    private LocalDateTime statusUpdatedAt;
 
-    public Transaction(String concept, BigDecimal amount, LocalDateTime date, UUID accountId) {
+    public Transaction(String concept, BigDecimal amount, LocalDateTime date, UUID accountId, UUID categoryId) {
         this.id = UUID.randomUUID();
         this.concept = concept;
         this.amount = amount;
         this.date = date;
         this.accountId = accountId;
+        this.categoryId = categoryId;
         this.status = TransactionStatus.CREATED;
+        this.statusUpdatedAt = LocalDateTime.now();
         validateTransaction();
     }
 
-    public Transaction(UUID id, String concept, BigDecimal amount, LocalDateTime date, UUID accountId, TransactionStatus status) {
+    public Transaction(UUID id,
+                       String concept,
+                       BigDecimal amount,
+                       LocalDateTime date,
+                       UUID accountId,
+                       UUID categoryId,
+                       TransactionStatus status,
+                       LocalDateTime statusUpdatedAt) {
         this.id = id;
         this.concept = concept;
         this.amount = amount;
         this.date = date;
         this.accountId = accountId;
+        this.categoryId = categoryId;
         this.status = status;
+        this.statusUpdatedAt = statusUpdatedAt;
         validateTransaction();
     }
 
@@ -76,11 +89,24 @@ public class Transaction {
         return status;
     }
 
+    public LocalDateTime getStatusUpdatedAt() {
+        return statusUpdatedAt;
+    }
+
+    public UUID getCategoryId() {
+        return categoryId;
+    }
+
     public void setStatus(TransactionStatus newStatus) {
         if (!isValidTransition(this.status, newStatus)) {
             throw new TransactionStatusTransitionException(String.format(TRANSACTION_INVALID_STATUS_TRANSITION, this.status, newStatus));
         }
         this.status = newStatus;
+        this.statusUpdatedAt = LocalDateTime.now();
+    }
+
+    public void setCategoryId(UUID categoryId) {
+        this.categoryId = categoryId;
     }
 
     private void validateTransaction() {

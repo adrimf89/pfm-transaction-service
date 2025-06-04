@@ -1,5 +1,6 @@
 package com.amf.pfm.transaction.application.transaction;
 
+import com.amf.pfm.transaction.domain.UnitOfWork;
 import com.amf.pfm.transaction.domain.event.DomainEventPublisher;
 import com.amf.pfm.transaction.domain.event.transaction.TransactionStatusEvent;
 import com.amf.pfm.transaction.domain.exception.TransactionException;
@@ -15,13 +16,16 @@ import static com.amf.pfm.transaction.domain.exception.Messages.TRANSACTION_STAT
 
 public class TransactionStatusService {
 
+    private final UnitOfWork unitOfWork;
     private final AccountRepository accountRepository;
     private final DomainEventPublisher domainEventPublisher;
     private final TransactionRepository transactionRepository;
 
-    public TransactionStatusService(AccountRepository accountRepository,
+    public TransactionStatusService(UnitOfWork unitOfWork,
+                                    AccountRepository accountRepository,
                                     DomainEventPublisher domainEventPublisher,
                                     TransactionRepository transactionRepository) {
+        this.unitOfWork = unitOfWork;
         this.accountRepository = accountRepository;
         this.domainEventPublisher = domainEventPublisher;
         this.transactionRepository = transactionRepository;
@@ -39,13 +43,15 @@ public class TransactionStatusService {
         }
     }
 
-    private void processTransaction(Transaction transaction) {
-        Account account = accountRepository.findById(transaction.getAccountId());
-        account.addOrSubtractAmount(transaction.getAmount());
-        accountRepository.updateAccountBalance(account.getId(), account.getBalance());
+    private void processTransaction(final Transaction transaction) {
+        unitOfWork.transactional(() -> {
+            Account account = accountRepository.findById(transaction.getAccountId());
+            account.addOrSubtractAmount(transaction.getAmount());
+            accountRepository.updateAccountBalance(account.getId(), account.getBalance(), account.getUpdatedAt());
 
-        transaction = transactionRepository.updateTransactionStatus(transaction.getId(), transaction.getAccountId(), Transaction.TransactionStatus.PROCESSED);
-        publishTransactionStatusEvent(transaction);
+            Transaction updatedTransaction = transactionRepository.updateTransactionStatus(transaction.getId(), transaction.getAccountId(), Transaction.TransactionStatus.PROCESSED);
+            publishTransactionStatusEvent(updatedTransaction);
+        });
     }
 
     private void publishTransactionStatusEvent(Transaction transaction) {
