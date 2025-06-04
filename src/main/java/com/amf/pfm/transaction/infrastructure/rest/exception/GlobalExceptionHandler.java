@@ -1,9 +1,6 @@
 package com.amf.pfm.transaction.infrastructure.rest.exception;
 
-import com.amf.pfm.transaction.domain.exception.AccountException;
-import com.amf.pfm.transaction.domain.exception.EntityConflictException;
-import com.amf.pfm.transaction.domain.exception.EntityNotFoundException;
-import com.amf.pfm.transaction.domain.exception.TransactionException;
+import com.amf.pfm.transaction.domain.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +28,11 @@ public class GlobalExceptionHandler {
         return handleException(exception, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(exception = { AccountException.class, TransactionException.class })
+    @ExceptionHandler(exception = {
+            AccountException.class,
+            TransactionException.class,
+            TransactionCategoryException.class
+    })
     public ResponseEntity<ErrorResponse> handleBadRequestException(Exception exception) {
         return handleException(exception, HttpStatus.BAD_REQUEST);
     }
